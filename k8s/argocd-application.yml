@@ -1,0 +1,30 @@
+# k8s/argocd-application.yml
+# ArgoCD가 django 프로젝트의 K8s 매니페스트(k8s 폴더)를
+# 자동으로 감시하고 배포하도록 하는 Application 정의 파일
+
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: django-app                 # ArgoCD 화면에 보일 앱 이름
+  namespace: argocd                # ArgoCD가 설치된 네임스페이스
+spec:
+  project: default                 # 기본 프로젝트 사용
+
+  # 소스(Git) 설정
+  source:
+    repoURL: 'https://github.com/sieun1803/django_project.git'  # GitHub 리포지토리 주소
+    targetRevision: main            # 배포에 사용할 브랜치
+    path: k8s                       # K8s yaml 파일들이 있는 폴더 경로
+
+  # 배포 대상(Kubernetes 클러스터) 설정
+  destination:
+    server: 'https://kubernetes.default.svc'  # 현재 클러스터(자기 자신)
+    namespace: django-ns                      # Django가 배포될 네임스페이스
+
+  # 동기화 정책 (자동 배포 설정)
+  syncPolicy:
+    automated:
+      prune: true       # Git에서 삭제된 리소스를 클러스터에서도 삭제
+      selfHeal: true    # 수동 변경이 생기면 Git 상태 기준으로 자동 복구
+    syncOptions:
+      - CreateNamespace=true   # 대상 네임스페이스가 없으면 자동 생성
