@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
-
+import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -76,9 +76,13 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",               # PostgreSQL 엔진 사용
+        "NAME": os.environ.get("POSTGRES_DB", "django_db"),      # DB 이름
+        "USER": os.environ.get("POSTGRES_USER", "django_user"),  # 접속 계정
+        "PASSWORD": os.environ.get("POSTGRES_PASSWORD", "django1234"),  # 비밀번호
+        "HOST": os.environ.get("POSTGRES_HOST", "postgres-service"),    # DB 서비스 이름
+        "PORT": os.environ.get("POSTGRES_PORT", "5432"),         # 포트
     }
 }
 
