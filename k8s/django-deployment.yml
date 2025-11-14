@@ -1,24 +1,36 @@
-# k8s/django-deployment.yaml
-# Docker 이미지로 패키징된 Django 애플리케이션을 배포하는 디플로이먼트 정의
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: django-deploy
   namespace: django-ns
 spec:
-  replicas: 2                    # 동일한 Pod 2개 실행 (가용성 확보)
+  replicas: 2
   selector:
     matchLabels:
-      app: django-app            # 이 라벨을 가진 Pod를 관리
+      app: django-app
   template:
     metadata:
       labels:
-        app: django-app          # 서비스와 연결될 라벨
+        app: django-app
     spec:
       containers:
         - name: django
-          image: sieun1803/django-k8s-app:latest  # Jenkins가 푸시한 이미지 사용
-          imagePullPolicy: Always                 # 항상 최신 이미지 가져오기
+          image: sieun1803/django-k8s-app:latest
+          imagePullPolicy: Always
           ports:
-            - containerPort: 8000                 # 컨테이너 내부 Django 포트
+            - containerPort: 8000
+          env:
+            # ------------------------------
+            # PostgreSQL 접속 정보 (Django용)
+            #   - settings.py 에서 os.environ 으로 읽어감
+            # ------------------------------
+            - name: POSTGRES_DB
+              value: "django_db"
+            - name: POSTGRES_USER
+              value: "django_user"
+            - name: POSTGRES_PASSWORD
+              value: "django1234"
+            - name: POSTGRES_HOST
+              value: "postgres-service"   # 위에서 만든 Service 이름
+            - name: POSTGRES_PORT
+              value: "5432"
