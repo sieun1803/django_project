@@ -1,0 +1,24 @@
+# k8s/django-deployment.yaml
+# Docker 이미지로 패키징된 Django 애플리케이션을 배포하는 디플로이먼트 정의
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-deploy
+  namespace: django-ns
+spec:
+  replicas: 2                    # 동일한 Pod 2개 실행 (가용성 확보)
+  selector:
+    matchLabels:
+      app: django-app            # 이 라벨을 가진 Pod를 관리
+  template:
+    metadata:
+      labels:
+        app: django-app          # 서비스와 연결될 라벨
+    spec:
+      containers:
+        - name: django
+          image: sieun1803/django-k8s-app:latest  # Jenkins가 푸시한 이미지 사용
+          imagePullPolicy: Always                 # 항상 최신 이미지 가져오기
+          ports:
+            - containerPort: 8000                 # 컨테이너 내부 Django 포트

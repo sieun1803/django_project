@@ -1,0 +1,7 @@
+# k8s/namespace.yaml
+# Django 애플리케이션을 위한 전용 네임스페이스 정의
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: django-ns
