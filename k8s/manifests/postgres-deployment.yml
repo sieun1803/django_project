@@ -18,7 +18,7 @@ spec:
         kubernetes.io/hostname: kube-node1
       containers:
         - name: postgres
-          image: postgres:13
+          image: postgres:15
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
