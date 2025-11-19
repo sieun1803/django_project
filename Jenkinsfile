@@ -72,10 +72,10 @@ pipeline {
 
                         # 🔹 Deployment 매니페스트 안의 이미지 태그를 새 태그로 교체
                         #   - 파일 경로/이름은 네 실제 파일에 맞게 수정해줘!
-                        sed -i 's|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${env.IMAGE_TAG}|g' k8s/manifests/django-deploy.yml
+                        sed -i 's|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${env.IMAGE_TAG}|g' k8s/manifests/django-deployment.yml
 
                         # 🔹 변경된 매니페스트 Git에 커밋 & 푸시
-                        git add k8s/manifests/django-deploy.yml
+                        git add k8s/manifests/django-deployment.yml
                         git commit -m "Update image to ${env.IMAGE_TAG}" || true
                         git push origin main || true
                     """
