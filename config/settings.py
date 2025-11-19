@@ -11,7 +11,6 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
-    'whitenoise.runserver_nostatic',  # ✅ 정적 파일 서빙
     'common.apps.CommonConfig',
     'pybo.apps.PyboConfig',
     'django.contrib.admin',
@@ -24,7 +23,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ Whitenoise 추가
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,9 +76,11 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
+# ✅ 정적 파일 설정
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
+# ✅ 로그인/로그아웃 리다이렉트
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
